@@ -1,38 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Usuarios</title>
+    <title>Panel de Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 50px;
+        }
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 700px;
+        }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        a.logout {
+            background: #dc3545;
+            color: white;
+            padding: 5px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a.logout:hover { background: #c82333; }
+        .messages { color: green; text-align: center; margin-bottom: 10px; }
+        form { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1 1 calc(50% - 10px); padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background: #007BFF; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        a.delete { background: #dc3545; color: white; padding: 5px 10px; border-radius: 5px; text-decoration: none; }
+        a.delete:hover { background: #c82333; }
+    </style>
 </head>
 <body>
-    <h2>Lista de Usuarios</h2>
-    <p>Bienvenido, {{ session.username }} | <a href="{{ url_for('logout') }}">Cerrar sesión</a></p>
+    <div class="panel">
+        <div class="header">
+            <h2>Panel de Usuarios</h2>
+            <span>Bienvenido, {{ session.username }} | <a href="{{ url_for('logout') }}" class="logout">Cerrar sesión</a></span>
+        </div>
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-          {% for msg in messages %}
-            <li>{{ msg }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="messages">
+              {% for msg in messages %}
+                <p>{{ msg }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
 
-    <h3>Agregar Usuario</h3>
-    <form method="POST" action="{{ url_for('agregar_usuario') }}">
-        Nombre: <input type="text" name="nombre" required>
-        Email: <input type="email" name="email" required>
-        Username: <input type="text" name="username" required>
-        Password: <input type="password" name="password" required>
-        <button type="submit">Agregar</button>
-    </form>
+        <form method="POST" action="{{ url_for('agregar_usuario') }}">
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="username" placeholder="Usuario" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <button type="submit">Agregar Usuario</button>
+        </form>
 
-    <h3>Usuarios Registrados</h3>
-    <ul>
-        {% for u in usuarios %}
-            <li>{{ u.id }} - {{ u.nombre }} - {{ u.email }} - {{ u.username }} 
-                | <a href="{{ url_for('borrar_usuario', id=u.id) }}">Eliminar</a>
-            </li>
-        {% endfor %}
-    </ul>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Usuario</th>
+                <th>Acciones</th>
+            </tr>
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.username }}</td>
+                <td>
+                    <a href="{{ url_for('borrar_usuario', id=u.id) }}" class="delete">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>
 </html>
