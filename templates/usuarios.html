@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Usuarios</title>
+</head>
+<body>
+    <h2>Lista de Usuarios</h2>
+    <p>Bienvenido, {{ session.username }} | <a href="{{ url_for('logout') }}">Cerrar sesión</a></p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <h3>Agregar Usuario</h3>
+    <form method="POST" action="{{ url_for('agregar_usuario') }}">
+        Nombre: <input type="text" name="nombre" required>
+        Email: <input type="email" name="email" required>
+        Username: <input type="text" name="username" required>
+        Password: <input type="password" name="password" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <h3>Usuarios Registrados</h3>
+    <ul>
+        {% for u in usuarios %}
+            <li>{{ u.id }} - {{ u.nombre }} - {{ u.email }} - {{ u.username }} 
+                | <a href="{{ url_for('borrar_usuario', id=u.id) }}">Eliminar</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
