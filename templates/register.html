@@ -1,39 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Registro</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f5f5f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 400px; }
-        h2 { text-align: center; color: #333; }
-        input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #ccc; }
-        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #1e7e34; }
-        .messages { color: red; text-align: center; }
-        a { text-decoration: none; color: #007BFF; }
-        a:hover { text-decoration: underline; }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Registro de Usuario</h2>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <div class="messages">
-                {% for msg in messages %}
-                <p>{{ msg }}</p>
-                {% endfor %}
-            </div>
-            {% endif %}
-        {% endwith %}
-        <form method="POST">
-            <input type="text" name="nombre" placeholder="Nombre completo" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="text" name="username" placeholder="Usuario" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-            <button type="submit">Registrar</button>
-        </form>
-        <p style="text-align:center;">¿Ya tienes cuenta? <a href="{{ url_for('login_view') }}">Inicia sesión</a></p>
-    </div>
+    <h1>Registro</h1>
+    <form action="/register" method="POST">
+        <input type="text" name="username" placeholder="Usuario" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Registrarse</button>
+    </form>
+    <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
 </body>
 </html>
