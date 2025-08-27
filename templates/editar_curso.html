@@ -1,0 +1,13 @@
+<h2>Editar Curso</h2>
+<form method="POST">
+    Nombre: <input type="text" name="nombre" value="{{ curso.nombre }}" required><br>
+    Descripción: <textarea name="descripcion">{{ curso.descripcion }}</textarea><br>
+    Profesor:
+    <select name="profesor">
+        {% for prof in profesores %}
+            <option value="{{ prof }}" {% if prof == curso.profesor %}selected{% endif %}>{{ prof }}</option>
+        {% endfor %}
+    </select><br>
+    <input type="submit" value="Guardar cambios">
+</form>
+<a href="/cursos">Volver</a>

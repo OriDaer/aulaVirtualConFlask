@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panel del Profesor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #2c3e50; }
+        table { width: 80%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        a.button { 
+            text-decoration: none; 
+            padding: 6px 12px; 
+            border: 1px solid #2980b9; 
+            color: white; 
+            background-color: #3498db; 
+            border-radius: 4px; 
+            margin-right: 5px;
+        }
+        a.button:hover { background-color: #2980b9; }
+        .top-bar { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h2>Bienvenido, {{ nombre }}</h2>
+        <a href="/logout" class="button">Cerrar sesión</a>
+        <a href="/cursos/crear" class="button">Crear nuevo curso</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>Nombre del Curso</th>
+            <th>Descripción</th>
+            <th>Profesor</th>
+            <th>Acciones</th>
+        </tr>
+        {% for curso in cursos %}
+        <tr>
+            <td>{{ curso.nombre }}</td>
+            <td>{{ curso.descripcion }}</td>
+            <td>{{ curso.profesor }}</td>
+            <td>
+                <a href="/cursos/editar/{{ curso.id }}" class="button">Editar</a>
+                <a href="/cursos/eliminar/{{ curso.id }}" class="button" style="background-color: #e74c3c;">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
