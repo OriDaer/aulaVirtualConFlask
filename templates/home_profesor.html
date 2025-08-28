@@ -3,49 +3,37 @@
 <head>
     <title>Panel del Profesor</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f8fb; }
         h2 { color: #2c3e50; }
-        table { width: 80%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-        th { background-color: #f4f4f4; }
-        a.button { 
-            text-decoration: none; 
-            padding: 6px 12px; 
-            border: 1px solid #2980b9; 
-            color: white; 
-            background-color: #3498db; 
-            border-radius: 4px; 
-            margin-right: 5px;
-        }
-        a.button:hover { background-color: #2980b9; }
-        .top-bar { margin-bottom: 20px; }
+        .top-bar { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .btn { text-decoration: none; padding: 8px 14px; border-radius: 6px; color: white; margin: 5px; }
+        .btn-crear { background-color: #27ae60; }
+        .btn-logout { background-color: #e74c3c; }
+        .btn-editar { background-color: #f39c12; }
+        .btn-eliminar { background-color: #c0392b; }
+        .btn-ver { background-color: #2980b9; }
+        .curso { background: white; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; }
     </style>
 </head>
 <body>
     <div class="top-bar">
         <h2>Bienvenido, {{ nombre }}</h2>
-        <a href="/logout" class="button">Cerrar sesión</a>
-        <a href="/cursos/crear" class="button">Crear nuevo curso</a>
+        <div>
+            <a href="{{ url_for('crear_curso') }}" class="btn btn-crear">➕ Crear curso</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-logout">Cerrar sesión</a>
+        </div>
     </div>
 
-    <table>
-        <tr>
-            <th>Nombre del Curso</th>
-            <th>Descripción</th>
-            <th>Profesor</th>
-            <th>Acciones</th>
-        </tr>
-        {% for curso in cursos %}
-        <tr>
-            <td>{{ curso.nombre }}</td>
-            <td>{{ curso.descripcion }}</td>
-            <td>{{ curso.profesor }}</td>
-            <td>
-                <a href="/cursos/editar/{{ curso.id }}" class="button">Editar</a>
-                <a href="/cursos/eliminar/{{ curso.id }}" class="button" style="background-color: #e74c3c;">Eliminar</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    <h3>Mis Cursos</h3>
+    {% for curso in cursos %}
+        <div class="curso">
+            <h4>{{ curso.nombre }}</h4>
+            <p>{{ curso.descripcion }}</p>
+            <p><b>Profesor:</b> {{ curso.profesor }}</p>
+            <a href="{{ url_for('ver_curso', id_curso=curso.id) }}" class="btn btn-ver">Ver curso</a>
+            <a href="{{ url_for('editar_curso', id_curso=curso.id) }}" class="btn btn-editar">Editar</a>
+            <a href="{{ url_for('eliminar_curso', id_curso=curso.id) }}" class="btn btn-eliminar">Eliminar</a>
+        </div>
+    {% endfor %}
 </body>
 </html>

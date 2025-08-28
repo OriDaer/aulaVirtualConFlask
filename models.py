@@ -71,3 +71,33 @@ class Curso(Database):
         sql = "SELECT * FROM cursos WHERE id=%s"
         self.cursor.execute(sql, (id_curso,))
         return self.cursor.fetchone()
+
+
+class Inscripcion(Database):
+    def inscribir(self, id_curso, id_usuario):
+        self.cursor.execute("SELECT * FROM inscripciones WHERE id_curso=%s AND id_usuario=%s", (id_curso, id_usuario))
+        if self.cursor.fetchone():
+            return False
+        sql = "INSERT INTO inscripciones (id_curso, id_usuario) VALUES (%s, %s)"
+        self.cursor.execute(sql, (id_curso, id_usuario))
+        self.conn.commit()
+        return True
+
+    def mis_cursos(self, id_usuario):
+        sql = """SELECT c.* FROM cursos c
+                JOIN inscripciones i ON i.id_curso=c.id
+                WHERE i.id_usuario=%s"""
+        self.cursor.execute(sql, (id_usuario,))
+        return self.cursor.fetchall()
+
+
+class Contenido(Database):
+    def agregar(self, id_curso, titulo, tipo, url):
+        sql = "INSERT INTO contenidos (id_curso, titulo, tipo, url) VALUES (%s,%s,%s,%s)"
+        self.cursor.execute(sql, (id_curso, titulo, tipo, url))
+        self.conn.commit()
+        return True
+
+    def listar(self, id_curso):
+        self.cursor.execute("SELECT * FROM contenidos WHERE id_curso=%s", (id_curso,))
+        return self.cursor.fetchall()

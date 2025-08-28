@@ -47,7 +47,7 @@ def init_routes(app):
     def home():
         if 'user' in session and session.get('rol') == 'estudiante':
             cursos = Curso().listar()
-            return render_template('home.html', nombre=session['user'], cursos=cursos)
+            return render_template('home_estudiante.html', nombre=session['user'], cursos=cursos)
         return redirect(url_for('login'))
 
     @app.route('/home_profesor')
@@ -95,8 +95,63 @@ def init_routes(app):
         Curso().eliminar(id_curso)
         return redirect(url_for('home_profesor'))
 
+    from models import Usuario, Curso, Inscripcion, Contenido
+
+    # Ver curso con contenidos
+    @app.route('/curso/<int:id_curso>')
+    def ver_curso(id_curso):
+        if 'rol' not in session:
+            return redirect(url_for('login'))
+
+        curso = Curso().obtener(id_curso)
+        if not curso:
+            return "Curso no encontrado"
+
+        contenidos = Contenido().listar(id_curso)
+
+        # Si es profesor, siempre puede ver
+        if session['rol'] == 'profesor':
+            return render_template('ver_curso.html', curso=curso, contenidos=contenidos, es_profesor=True)
+
+        # Si es estudiante, debe estar inscrito
+        id_usuario = Usuario().login(session['user'], "dummy")  # ⚠ O mejor guarda id en session al logear
+        # Para simplificar: asumo guardas user_id en session al logear
+        id_usuario = session.get('id_usuario')
+
+        insc = Inscripcion().mis_cursos(id_usuario)
+        ids_cursos = [c['id'] for c in insc]
+
+        if id_curso not in ids_cursos:
+            return "No estás inscrito en este curso"
+
+        return render_template('ver_curso.html', curso=curso, contenidos=contenidos, es_profesor=False)
+
+
+    # Inscribirse a un curso
+    @app.route('/curso/<int:id_curso>/inscribirse')
+    def inscribirse(id_curso):
+        if 'rol' in session and session['rol'] == 'estudiante':
+            Inscripcion().inscribir(id_curso, session['id_usuario'])
+            return redirect(url_for('ver_curso', id_curso=id_curso))
+        return "Acceso denegado"
+
+
+    # Subir contenido (solo profesor)
+    @app.route('/curso/<int:id_curso>/contenido', methods=['GET','POST'])
+    def agregar_contenido(id_curso):
+        if 'rol' in session and session['rol'] != 'profesor':
+            return "Acceso denegado"
+        if request.method == 'POST':
+            titulo = request.form.get('titulo')
+            tipo = request.form.get('tipo')
+            url = request.form.get('url')
+            Contenido().agregar(id_curso, titulo, tipo, url)
+            return redirect(url_for('ver_curso', id_curso=id_curso))
+        return render_template('agregar_contenido.html', id_curso=id_curso)
+
+
     @app.route('/logout')
     def logout():
         session.pop('user', None)
         session.pop('rol', None)
-        return redirect(url_for('login'))
+        return redirect(url_for('login')) 

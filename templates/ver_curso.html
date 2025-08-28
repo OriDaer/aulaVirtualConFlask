@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ curso.nombre }}</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        h2 { color: #2c3e50; }
+        .contenido { margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <h2>{{ curso.nombre }}</h2>
+    <p><b>Profesor:</b> {{ curso.profesor }}</p>
+    <p>{{ curso.descripcion }}</p>
+
+    <h3>Contenidos</h3>
+    {% if contenidos %}
+        {% for c in contenidos %}
+            <div class="contenido">
+                <b>{{ c.titulo }}</b><br>
+                {% if c.tipo == 'pdf' %}
+                    📄 <a href="{{ c.url }}" target="_blank">Ver PDF</a>
+                {% elif c.tipo == 'video' %}
+                    🎬 <a href="{{ c.url }}" target="_blank">Ver Video</a>
+                {% elif c.tipo == 'link' %}
+                    🔗 <a href="{{ c.url }}" target="_blank">Abrir enlace</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay contenidos aún.</p>
+    {% endif %}
+
+    {% if es_profesor %}
+        <a href="{{ url_for('agregar_contenido', id_curso=curso.id) }}">➕ Agregar Contenido</a>
+    {% else %}
+        <a href="{{ url_for('inscribirse', id_curso=curso.id) }}">Inscribirme</a>
+    {% endif %}
+    <br><br>
+    <a href="{{ url_for('home') }}">Volver</a>
+</body>
+</html>

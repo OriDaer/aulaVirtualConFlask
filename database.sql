@@ -22,6 +22,26 @@ CREATE TABLE cursos (
     descripcion VARCHAR(500),
     profesor VARCHAR(100) NOT NULL
 );
+-- Tabla de inscripciones (estudiante ↔ curso)
+DROP TABLE IF EXISTS inscripciones;
+CREATE TABLE inscripciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_curso INT,
+    id_usuario INT,
+    FOREIGN KEY (id_curso) REFERENCES cursos(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+-- Tabla de contenidos
+DROP TABLE IF EXISTS contenidos;
+CREATE TABLE contenidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_curso INT,
+    titulo VARCHAR(200) NOT NULL,
+    tipo ENUM('pdf','video','link') NOT NULL,
+    url VARCHAR(500) NOT NULL,
+    FOREIGN KEY (id_curso) REFERENCES cursos(id) ON DELETE CASCADE
+);
 
 -- Insertar usuarios de prueba
 INSERT INTO usuarios (nombre, email, password, rol)

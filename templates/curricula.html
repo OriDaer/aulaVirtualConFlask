@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Currícula</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #fdfdfd; }
+        h2 { color: #2c3e50; margin-bottom: 20px; }
+        table { width: 80%; border-collapse: collapse; margin: 0 auto; box-shadow: 0px 2px 6px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .btn { text-decoration: none; padding: 8px 14px; border-radius: 6px; color: white; margin: 5px; display: inline-block; }
+        .btn-volver { background-color: #2980b9; }
+        .btn-logout { background-color: #e74c3c; }
+        .top-bar { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; width: 80%; margin-left: auto; margin-right: auto; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h2>Currícula</h2>
+        <div>
+            <a href="{{ url_for('home') }}" class="btn btn-volver">🏠 Volver</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-logout">Cerrar sesión</a>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Profesor</th>
+            <th>Cursos</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{ row.profesor }}</td>
+            <td>{{ row.cursos }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

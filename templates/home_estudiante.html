@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panel del Estudiante</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+        h2 { color: #2c3e50; }
+        .top-bar { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .btn { text-decoration: none; padding: 8px 14px; border-radius: 6px; color: white; margin: 5px; }
+        .logout { background-color: #e74c3c; }
+        .curso { background: white; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        .btn-view { background-color: #3498db; }
+        .btn-inscribir { background-color: #27ae60; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <h2>Bienvenido, {{ nombre }}</h2>
+        <a href="{{ url_for('logout') }}" class="btn logout">Cerrar sesión</a>
+    </div>
+
+    <h3>Cursos disponibles</h3>
+    {% for curso in cursos %}
+        <div class="curso">
+            <h4>{{ curso.nombre }}</h4>
+            <p>{{ curso.descripcion }}</p>
+            <p><b>Profesor:</b> {{ curso.profesor }}</p>
+            <a href="{{ url_for('ver_curso', id_curso=curso.id) }}" class="btn btn-view">Ver curso</a>
+            <a href="{{ url_for('inscribirse', id_curso=curso.id) }}" class="btn btn-inscribir">Inscribirme</a>
+        </div>
+    {% endfor %}
+</body>
+</html>
