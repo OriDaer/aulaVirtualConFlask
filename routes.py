@@ -18,6 +18,7 @@ def init_routes(app):
             user = Usuario().login(email, password)
             if user:
                 session['user'] = user['nombre']
+                session['id_usuario'] = user['id'] 
                 session['rol'] = user['rol']
                 if user['rol'] == 'profesor':
                     return redirect(url_for('home_profesor'))
@@ -127,18 +128,18 @@ def init_routes(app):
         return render_template('ver_curso.html', curso=curso, contenidos=contenidos, es_profesor=False)
 
 
-    # Inscribirse a un curso
+    # --- Inscribirse a curso ---
     @app.route('/curso/<int:id_curso>/inscribirse')
     def inscribirse(id_curso):
-        if 'rol' in session and session['rol'] == 'estudiante':
-            Inscripcion().inscribir(id_curso, session['id_usuario'])
-            return redirect(url_for('ver_curso', id_curso=id_curso))
-        return "Acceso denegado"
-
-
+        if session.get('rol') != 'estudiante' or 'id_usuario' not in session:
+            return redirect(url_for('login'))
+        Inscripcion().inscribir(id_curso, session['id_usuario'])
+        return redirect(url_for('ver_curso', id_curso=id_curso))
     # Subir contenido (solo profesor)
     @app.route('/curso/<int:id_curso>/contenido', methods=['GET','POST'])
     def agregar_contenido(id_curso):
+        if session.get('rol') != 'profesor':
+            return "Acceso denegado"
         if 'rol' in session and session['rol'] != 'profesor':
             return "Acceso denegado"
         if request.method == 'POST':
@@ -148,7 +149,6 @@ def init_routes(app):
             Contenido().agregar(id_curso, titulo, tipo, url)
             return redirect(url_for('ver_curso', id_curso=id_curso))
         return render_template('agregar_contenido.html', id_curso=id_curso)
-
 
     @app.route('/logout')
     def logout():

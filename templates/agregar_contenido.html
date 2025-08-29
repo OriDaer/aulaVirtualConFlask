@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agregar Contenido</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"], select {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #555;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Agregar Contenido al Curso</h2>
+        <form method="POST">
+            <label for="titulo">Título del contenido:</label>
+            <input type="text" name="titulo" id="titulo" required>
+
+            <label for="tipo">Tipo de contenido:</label>
+            <select name="tipo" id="tipo" required>
+                <option value="">Seleccione...</option>
+                <option value="pdf">PDF</option>
+                <option value="video">Video</option>
+                <option value="link">Enlace</option>
+            </select>
+
+            <label for="url">URL o ruta del contenido:</label>
+            <input type="text" name="url" id="url" placeholder="Ej: https://..." required>
+
+            <button type="submit" class="btn">Agregar Contenido</button>
+        </form>
+        <a href="{{ url_for('ver_curso', id_curso=id_curso) }}" class="back">← Volver al curso</a>
+    </div>
+</body>
+</html>

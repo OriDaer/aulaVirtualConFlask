@@ -1,16 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 300px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #ff7e5f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #e06b4f;
+        }
+        a {
+            display: block;
+            margin-top: 15px;
+            color: #ff7e5f;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h2>Registro</h2>
-    <form method="POST">
-        Nombre: <input type="text" name="nombre" required><br>
-        Email: <input type="email" name="email" required><br>
-        Contraseña: <input type="password" name="password" required><br>
-        <input type="submit" value="Registrar">
-    </form>
-    <a href="/login">Login</a>
+    <div class="register-container">
+        <h2>Registro</h2>
+        <form method="POST">
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <input type="email" name="email" placeholder="Correo electrónico" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <input type="submit" value="Registrar">
+        </form>
+        <p>¿Ya tienes cuenta? </p>
+        <a href="{{ url_for('login') }}">Inicia sesión</a>
+    </div>
 </body>
 </html>
