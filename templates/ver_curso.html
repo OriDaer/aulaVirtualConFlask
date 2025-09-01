@@ -1,89 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>{{ curso.nombre }}</title>
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 20px; 
-            background-color: #f4f6f8; 
-            color: #333;
-        }
-        h2 { 
-            color: #2c3e50; 
-            border-bottom: 2px solid #3498db; 
-            padding-bottom: 5px; 
-        }
-        .contenido { 
-            margin: 15px 0; 
-            padding: 15px; 
-            background-color: #fff; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            margin: 10px 5px 0 0;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            color: #fff;
-            background-color: #3498db;
-            transition: background-color 0.3s ease;
-        }
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        .btn-secondary {
-            background-color: #95a5a6;
-        }
-        .btn-secondary:hover {
-            background-color: #7f8c8d;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>{{ curso['nombre'] }}</title>
+<style>
+    body { font-family: Arial, sans-serif; background: #eef2f7; padding: 30px; }
+    .container { background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 900px; margin: auto; }
+    h1 { color: #2c3e50; }
+    h2 { color: #34495e; margin-top: 25px; }
+    .contenido { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9; }
+    a { color: #007bff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    iframe { width: 100%; height: 300px; margin-top: 10px; }
+    .btn { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #4CAF50; color: #fff; border-radius: 6px; text-decoration: none; }
+    .btn:hover { background: #45a049; }
+</style>
 </head>
 <body>
-    <h2>{{ curso.nombre }}</h2>
-    <p><b>Profesor:</b> {{ curso.profesor }}</p>
-    <p>{{ curso.descripcion }}</p>
+<div class="container">
+    <h1>{{ curso['nombre'] }}</h1>
+    <p>{{ curso['descripcion'] }}</p>
 
-    <h3>Contenidos</h3>
+    {% if es_profesor %}
+    <a class="btn" href="{{ url_for('agregar_contenido', id_curso=curso['id']) }}">Agregar Contenido</a>
+    {% endif %}
+
+    <h2>Contenidos</h2>
     {% if contenidos %}
         {% for c in contenidos %}
-            <div class="contenido">
-                <b>{{ c.titulo }}</b><br>
-                {% if c.tipo == 'pdf' %}
-                    📄 <a href="{{ c.url }}" target="_blank">Ver PDF</a>
-                {% elif c.tipo == 'video' %}
-                    🎬 <a href="{{ c.url }}" target="_blank">Ver Video</a>
-                {% elif c.tipo == 'link' %}
-                    🔗 <a href="{{ c.url }}" target="_blank">Abrir enlace</a>
-                {% endif %}
-            </div>
+        <div class="contenido">
+            <p><strong>Descripción:</strong> {{ c['descripcion'] }}</p>
+            {% if c['tipo'] == 'pdf' %}
+                <p><strong>PDF:</strong> <a href="{{ c['url'] }}" target="_blank">{{ c['url'].split('/')[-1] }}</a></p>
+            {% elif c['tipo'] == 'link' %}
+                <p><strong>Link:</strong> <a href="{{ c['url'] }}" target="_blank">{{ c['url'] }}</a></p>
+            {% elif c['tipo'] == 'video' %}
+                <iframe src="{{ c['url'] }}" frameborder="0" allowfullscreen></iframe>
+            {% endif %}
+        </div>
         {% endfor %}
     {% else %}
         <p>No hay contenidos aún.</p>
     {% endif %}
 
-    {% if es_profesor %}
-        <a href="{{ url_for('agregar_contenido', id_curso=curso.id) }}" class="btn">➕ Agregar Contenido</a>
-        <a href="{{ url_for('home_profesor') }}" class="btn btn-secondary">Volver</a>
-    {% else %}
-        {% set inscrito = False %}
-        {% for c in cursos_inscritos %}
-            {% if c.id == curso.id %}
-                {% set inscrito = True %}
-            {% endif %}
-        {% endfor %}
-
-        {% if inscrito %}
-            <span class="btn btn-secondary">Ya estás inscrito</span>
-        {% else %}
-            <a href="{{ url_for('inscribirse', id_curso=curso.id) }}" class="btn">Inscribirme</a>
-        {% endif %}
-        <a href="{{ url_for('home') }}" class="btn btn-secondary">Volver</a>
-    {% endif %}
+    <a href="{{ url_for('home') if not es_profesor else url_for('home_profesor') }}">Volver al inicio</a>
+</div>
 </body>
 </html>

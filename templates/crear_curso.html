@@ -1,13 +1,23 @@
-<h2>Crear Curso</h2>
-<form method="POST">
-    Nombre: <input type="text" name="nombre" required><br>
-    Descripción: <textarea name="descripcion"></textarea><br>
-    Profesor:
-    <select name="profesor">
+<h2 style="text-align:center; color:#4A90E2;">Crear Curso</h2>
+
+<form method="POST" style="max-width:500px; margin:auto; padding:20px; border:1px solid #ccc; border-radius:10px; background-color:#f9f9f9; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    
+    <label for="nombre" style="display:block; margin-bottom:8px; font-weight:bold;">Nombre:</label>
+    <input type="text" name="nombre" id="nombre" required style="width:100%; padding:10px; margin-bottom:15px; border-radius:5px; border:1px solid #ccc;">
+
+    <label for="descripcion" style="display:block; margin-bottom:8px; font-weight:bold;">Descripción:</label>
+    <textarea name="descripcion" id="descripcion" style="width:100%; padding:10px; margin-bottom:15px; border-radius:5px; border:1px solid #ccc;" rows="4"></textarea>
+
+    <label for="profesor" style="display:block; margin-bottom:8px; font-weight:bold;">Profesor:</label>
+    <select name="profesor" id="profesor" style="width:100%; padding:10px; margin-bottom:20px; border-radius:5px; border:1px solid #ccc;">
         {% for prof in profesores %}
             <option value="{{ prof }}">{{ prof }}</option>
         {% endfor %}
-    </select><br>
-    <input type="submit" value="Crear">
+    </select>
+
+    <input type="submit" value="Crear" style="width:100%; padding:12px; background-color:#4A90E2; color:white; border:none; border-radius:5px; font-size:16px; cursor:pointer;">
 </form>
-<a href="/cursos">Volver</a>
+
+<div style="text-align:center; margin-top:15px;">
+    <a href="/home_profesor" style="text-decoration:none; color:#4A90E2; font-weight:bold;">Volver</a>
+</div>

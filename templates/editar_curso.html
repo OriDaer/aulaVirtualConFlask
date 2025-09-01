@@ -1,13 +1,111 @@
 <h2>Editar Curso</h2>
-<form method="POST">
-    Nombre: <input type="text" name="nombre" value="{{ curso.nombre }}" required><br>
-    Descripción: <textarea name="descripcion">{{ curso.descripcion }}</textarea><br>
-    Profesor:
-    <select name="profesor">
+
+<form method="POST" class="formulario-curso">
+    <label for="nombre">Nombre</label>
+    <input 
+        type="text" 
+        id="nombre" 
+        name="nombre" 
+        value="{{ curso.nombre }}" 
+        required
+    >
+
+    <label for="descripcion">Descripción</label>
+    <textarea id="descripcion" name="descripcion">{{ curso.descripcion }}</textarea>
+
+    <label for="profesor">Profesor</label>
+    <select id="profesor" name="profesor">
         {% for prof in profesores %}
             <option value="{{ prof }}" {% if prof == curso.profesor %}selected{% endif %}>{{ prof }}</option>
         {% endfor %}
-    </select><br>
-    <input type="submit" value="Guardar cambios">
+    </select>
+
+    <div class="acciones">
+        <input type="submit" value="Guardar cambios">
+        <a href="/cursos" class="volver">Volver</a>
+    </div>
 </form>
-<a href="/cursos">Volver</a>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f0f2f5;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .formulario-curso {
+        background: #fff;
+        padding: 30px 25px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 4px;
+        color: #444;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .acciones {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    input[type="submit"] {
+        background: #4a90e2;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    input[type="submit"]:hover {
+        background: #357ab7;
+    }
+
+    .volver {
+        text-decoration: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        background: #ddd;
+        color: #333;
+        transition: background 0.3s;
+    }
+
+    .volver:hover {
+        background: #bbb;
+    }
+</style>

@@ -92,7 +92,11 @@ class Inscripcion(Database):
 
 
 class Contenido(Database):
-    def agregar(self, id_curso, titulo, tipo, url):
+    def agregar(self, id_curso, titulo, tipo, url, descripcion=None):
+        self.titulo = titulo
+        self.tipo = tipo
+        self.url = url
+        self.descripcion = descripcion
         sql = "INSERT INTO contenidos (id_curso, titulo, tipo, url) VALUES (%s,%s,%s,%s)"
         self.cursor.execute(sql, (id_curso, titulo, tipo, url))
         self.conn.commit()
