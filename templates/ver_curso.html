@@ -43,7 +43,7 @@
         <p>No hay contenidos aún.</p>
     {% endif %}
 
-    <a href="{{ url_for('home') if not es_profesor else url_for('home_profesor') }}">Volver al inicio</a>
+    <a href="{{ url_for('home_estudiante') if not es_profesor else url_for('home_profesor') }}">Volver al inicio</a>
 </div>
 </body>
 </html>
